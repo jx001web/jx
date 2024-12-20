@@ -114,13 +114,66 @@ body, html {
     width: 50px;
 }
 
+
+
+/* 在现有样式之前添加 */
+#intro-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#intro-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+}
+
+#start-adventure {
+    position: relative;
+    z-index: 11;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    background: linear-gradient(45deg, #ffd700, #ff8c00);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'YouYuan', fantasy;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+#start-adventure:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(45deg, #ff8c00, #ffd700);
+}
+
+.hidden {
+    display: none !important;
+}
 </style>
 </head>
 <body>
+  <div id="intro-section">
+    <img id="intro-image" src="intro-background.png" alt="Adventure Introduction">
+    <button id="start-adventure">开启探索之旅</button>
+  </div>
     <img id="treasure-map" src="library.png" alt="Ancient Library">
     <img id="clue-image" src="1.png" alt="Clue" onclick="onClueImageClick()">
     <div id="clue-text"></div>
-    <button id="continue-button" style="display: none; position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%); z-index: 3;">解码</button>
+    <button id="continue-button" style="display: none; position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%); z-index: 3;">
+      解码</button>
     <img id="temple-map" src="temple.png" alt="Ancient Temple" style="display: none; width: 100%; height: auto;">
     <img id="treasure-chest" src="box.png" alt="Treasure Chest" onclick="onTreasureChestClick()">
     <div id="treasure-revealed"></div>
@@ -189,6 +242,21 @@ function onClueImageClick() {
   document.getElementById('clue-text').style.display = 'block';
   document.getElementById('continue-button').style.display = 'block';
  
+}
+
+// 在现有代码之前添加
+function startAdventure() {
+    const introSection = document.getElementById('intro-section');
+    const mainContent = document.getElementById('treasure-map');
+    
+    // 添加淡出效果
+    introSection.style.transition = 'opacity 0.01s ease';
+    introSection.style.opacity = '0';
+    
+    setTimeout(() => {
+        introSection.classList.add('hidden');
+        mainContent.style.display = 'block';
+    }, 10);
 }
 
 // 处理按钮点击事件
@@ -264,6 +332,10 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('treasure-chest').addEventListener('click', onTreasureChestClick, { once: true });  // once: true 确保只触发一次
     document.getElementById('treasure-revealed-button').addEventListener('click', onTreasureRevealedButtonClick);
     newTreasureChest.addEventListener('click', onTreasureChestClick, { once: true });
+    document.getElementById('start-adventure').addEventListener('click', startAdventure);
+    
+    // 初始隐藏主要内容
+    document.getElementById('treasure-map').style.display = 'none';
 });
 </script>
 </body>
